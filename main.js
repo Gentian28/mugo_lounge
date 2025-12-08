@@ -15,7 +15,9 @@ async function loadMenuSource() {
   }
 
   try {
-    const res = await fetch("menu.json");
+    // Append a cache-busting query and request no-store to avoid stale GitHub Pages caching
+    const url = `menu.json?t=${Date.now()}`;
+    const res = await fetch(url, { cache: 'no-store' });
     if (!res.ok) throw new Error("Failed to fetch menu.json");
     return await res.json();
   } catch (err) {

@@ -16,6 +16,7 @@
   const saveBtn = document.getElementById('save-btn');
   const logoutBtn = document.getElementById('logout-btn');
   const saveStatus = document.getElementById('save-status');
+  const saveGithubBtn = document.getElementById('save-github-btn');
 
   let menu = { tabs: [] };
   let originalMenu = null; // last saved snapshot
@@ -158,6 +159,23 @@
       saveBtn.disabled = false;
     }
   }
+
+  // Read stored GitHub config (legacy token-only or full config)
+  function getStoredGithubConfig() {
+    try {
+      const cfg = localStorage.getItem('mugo-github-config');
+      if (cfg) return JSON.parse(cfg);
+      const tok = localStorage.getItem('mugo-github-token');
+      if (tok) return { owner: null, repo: null, branch: 'main', path: 'menu.json', token: tok };
+    } catch (e) {
+      console.warn('Invalid github config in storage', e);
+    }
+    return null;
+  }
+
+  let githubConfig = getStoredGithubConfig();
+  // hide the separate "Salva su GitHub" button when a config/token is already stored
+  if (saveGithubBtn) saveGithubBtn.style.display = githubConfig ? 'none' : '';
 
   // Download menu.json locally (fallback for static hosting)
   function downloadMenu() {
@@ -391,7 +409,7 @@
       title.style.fontWeight = '700';
 
       const owner = document.createElement('input'); owner.placeholder = 'Proprietario (owner)'; owner.style.width='100%'; owner.style.marginBottom='8px'; owner.value = '';
-      const repo = document.createElement('input'); repo.placeholder = 'Repository (es: user/repo)'; repo.style.width='100%'; repo.style.marginBottom='8px'; repo.value = '';
+      const repo = document.createElement('input'); repo.placeholder = 'Repository (es: repo-name)'; repo.style.width='100%'; repo.style.marginBottom='8px'; repo.value = '';
       const branch = document.createElement('input'); branch.placeholder = 'Branch (default: main)'; branch.style.width='100%'; branch.style.marginBottom='8px'; branch.value = 'main';
       const pathInput = document.createElement('input'); pathInput.placeholder = 'Percorso file (default: menu.json)'; pathInput.style.width='100%'; pathInput.style.marginBottom='8px'; pathInput.value = 'menu.json';
       const token = document.createElement('input'); token.placeholder = 'Token GitHub (personal access token)'; token.type = 'password'; token.style.width='100%'; token.style.marginBottom='8px'; token.value = '';
@@ -412,17 +430,36 @@
         const pathVal = pathInput.value.trim() || 'menu.json';
         const tokenVal = token.value.trim();
         if (!ownerVal || !repoVal || !tokenVal) return alert('Inserisci owner, repo e token');
-        if (remember.checked) localStorage.setItem('mugo-github-token', tokenVal);
+        const params = { owner: ownerVal, repo: repoVal, branch: branchVal, path: pathVal, token: tokenVal, remember: remember.checked };
+        if (remember.checked) {
+          try {
+            localStorage.setItem('mugo-github-config', JSON.stringify(params));
+            // also keep legacy token key for compatibility
+            localStorage.setItem('mugo-github-token', tokenVal);
+            githubConfig = params;
+            if (saveGithubBtn) saveGithubBtn.style.display = 'none';
+          } catch (e) { console.warn('Could not store GitHub config', e); }
+        }
         overlay.remove();
-        resolve({ owner: ownerVal, repo: repoVal, branch: branchVal, path: pathVal, token: tokenVal });
+        resolve(params);
       });
 
       actions.appendChild(cancel); actions.appendChild(submit);
       box.appendChild(title);
       box.appendChild(owner); box.appendChild(repo); box.appendChild(branch); box.appendChild(pathInput); box.appendChild(token); box.appendChild(rememberLabel); box.appendChild(hint); box.appendChild(actions);
       overlay.appendChild(box); document.body.appendChild(overlay);
-      // prefill token if stored
-      const stored = localStorage.getItem('mugo-github-token'); if (stored) token.value = stored;
+      // prefill fields from stored config (if present)
+      try {
+        const storedCfg = getStoredGithubConfig();
+        if (storedCfg) {
+          if (storedCfg.owner) owner.value = storedCfg.owner;
+          if (storedCfg.repo) repo.value = storedCfg.repo;
+          if (storedCfg.branch) branch.value = storedCfg.branch;
+          if (storedCfg.path) pathInput.value = storedCfg.path;
+          if (storedCfg.token) token.value = storedCfg.token;
+          remember.checked = !!(storedCfg.token);
+        }
+      } catch(e){}
     });
   }
 
@@ -658,6 +695,16 @@
   });
 
   saveBtn.addEventListener('click', () => {
+    // If we have a stored GitHub config with a token, prefer committing to GitHub
+    if (githubConfig && githubConfig.token) {
+      // If owner/repo are missing (legacy token-only), open modal to prompt for repo details
+      if (!githubConfig.owner || !githubConfig.repo) {
+        showGithubModal().then(params => { if (params) saveToGitHub(params); });
+        return;
+      }
+      saveToGitHub(githubConfig);
+      return;
+    }
     saveToServer();
   });
 
@@ -666,6 +713,10 @@
   if (saveGithubBtn) saveGithubBtn.addEventListener('click', () => {
     showGithubModal().then(params => {
       if (!params) return;
+      // if user asked to remember, store full config
+      if (params.remember) {
+        try { localStorage.setItem('mugo-github-config', JSON.stringify(params)); localStorage.removeItem('mugo-github-token'); githubConfig = params; if (saveGithubBtn) saveGithubBtn.style.display = 'none'; } catch(e){}
+      }
       saveToGitHub(params);
     });
   });
