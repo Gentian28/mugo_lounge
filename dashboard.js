@@ -16,9 +16,8 @@
   const saveBtn = document.getElementById('save-btn');
   const logoutBtn = document.getElementById('logout-btn');
   const saveStatus = document.getElementById('save-status');
-  // use `var` here to tolerate accidental duplicate concatenation on hosted builds
-  // (duplicate `const` declarations in the same scope cause a SyntaxError at parse time)
-  var saveGithubBtn = document.getElementById('save-github-btn');
+  // Helper to read the GitHub save button at use-time (in case script ran before DOM)
+  function getSaveGithubBtn() { return document.getElementById('save-github-btn'); }
 
   let menu = { tabs: [] };
   let originalMenu = null; // last saved snapshot
@@ -27,7 +26,10 @@
 
   async function loadMenu() {
     try {
-      const res = await fetch('menu.json');
+      // use cache-busting so dashboard picks up changes pushed to GitHub Pages
+      const url = `menu.json?t=${Date.now()}`;
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) throw new Error('Failed to fetch menu.json');
       menu = await res.json();
     } catch (err) {
       console.error('Could not load menu.json', err);
@@ -177,7 +179,7 @@
 
   let githubConfig = getStoredGithubConfig();
   // hide the separate "Salva su GitHub" button when a config/token is already stored
-  if (saveGithubBtn) saveGithubBtn.style.display = githubConfig ? 'none' : '';
+  const __saveBtn = getSaveGithubBtn(); if (__saveBtn) __saveBtn.style.display = githubConfig ? 'none' : '';
 
   // Download menu.json locally (fallback for static hosting)
   function downloadMenu() {
@@ -497,9 +499,15 @@
       }
 
       showToast('Commit su GitHub eseguito con successo', 'success');
-      originalMenu = JSON.parse(JSON.stringify(menu));
-      dirtyTabs = {};
-      renderTabs();
+      // reload the canonical menu from the repo (cache-busting) so dashboard shows the exact committed file
+      try {
+        await loadMenu();
+      } catch (e) {
+        // fallback to updating in-memory snapshot
+        originalMenu = JSON.parse(JSON.stringify(menu));
+        dirtyTabs = {};
+        renderTabs();
+      }
     } catch (err) {
       console.error('GitHub save failed', err);
       showToast('GitHub commit fallito: ' + (err.message || err), 'error');
