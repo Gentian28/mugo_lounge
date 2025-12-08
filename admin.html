@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MUGO Menu — Admin</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="menu-page">
+    <header class="menu-page-header">
+      <div class="menu-brand">
+        <img src="img/mugo_logo.png" alt="MUGO" style="max-width:70px">
+        <div class="menu-brand-sub">Admin</div>
+      </div>
+    </header>
+
+    <section class="menu-shell">
+      <div id="login-box" class="menu-card active">
+        <header class="menu-card-header"><h1 class="menu-card-title-main">Login</h1></header>
+        <div style="max-width:480px;margin:0 auto;">
+          <label for="username" style="display:block;margin-bottom:6px;color:var(--text-muted);font-size:13px">Username</label>
+          <input id="username" type="text" style="width:100%;padding:8px;margin-bottom:12px;background:rgba(0,0,0,0.6);color:var(--text-main);border:1px solid rgba(255,255,255,0.06)" />
+          <label for="password" style="display:block;margin-bottom:6px;color:var(--text-muted);font-size:13px">Password</label>
+          <input id="password" type="password" style="width:100%;padding:8px;margin-bottom:12px;background:rgba(0,0,0,0.6);color:var(--text-main);border:1px solid rgba(255,255,255,0.06)" />
+          <div style="display:flex;gap:8px;justify-content:flex-end">
+            <button id="login-btn" class="menu-tab">Sign in</button>
+          </div>
+          <p style="margin-top:12px;font-size:12px;color:var(--text-muted)">Note: this dashboard uses client-side protection only — not secure for public deployments.</p>
+        </div>
+      </div>
+
+      <div id="admin-panel" class="menu-card" role="region" aria-label="Admin panel" hidden>
+        <header class="menu-card-header"><h1 class="menu-card-title-main">Menu Editor</h1></header>
+
+        <div class="menu-editor">
+          <textarea id="menu-json-editor" aria-label="Menu JSON editor"></textarea>
+          <div class="menu-editor-actions">
+            <button id="apply-btn" class="menu-tab">Apply JSON</button>
+            <button id="save-btn" class="menu-tab">Save to localStorage</button>
+            <button id="download-btn" class="menu-tab">Download JSON</button>
+            <button id="logout-btn" class="menu-tab">Logout</button>
+          </div>
+        </div>
+
+        <div style="margin-top:18px">
+          <h2 style="font-size:14px;margin-bottom:8px">Preview</h2>
+          <div id="menu-preview"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>
