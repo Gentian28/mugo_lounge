@@ -5,8 +5,11 @@
 */
 
 (function () {
-  // Note: we no longer redirect automatically to `admin.html` when auth is missing.
-  // Saving will prompt an inline login modal if credentials are missing or invalid.
+  // Require login to access dashboard. Redirect to `admin.html` if not logged.
+  if (localStorage.getItem('mugo-admin-auth') !== '1') {
+    location.href = 'admin.html';
+    return;
+  }
 
   const crudRoot = document.getElementById('crud-root');
   const addTabBtn = document.getElementById('add-tab-btn');
@@ -95,18 +98,32 @@
     }
     saveBtn.disabled = true;
     saveStatus.textContent = 'Salvataggio in corso...';
+    // Try sending to server; if server not available (static host), fallback to download
     try {
-      const res = await fetch('/save-menu', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + token
-        },
-        body: JSON.stringify(menu)
-      });
+      let res;
+      try {
+        res = await fetch('/save-menu', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic ' + token
+          },
+          body: JSON.stringify(menu)
+        });
+      } catch (netErr) {
+        // network error (no server) — fallback to download
+        console.warn('Network error when saving to server, falling back to download', netErr);
+        downloadMenu();
+        saveStatus.textContent = 'Server non disponibile — menu scaricato localmente.';
+        showToast('Server non disponibile — menu scaricato.', 'success');
+        originalMenu = JSON.parse(JSON.stringify(menu));
+        dirtyTabs = {};
+        renderTabs();
+        saveBtn.disabled = false;
+        return;
+      }
 
       if (!res.ok) {
-        // If unauthorized, offer inline login and retry
         if (res.status === 401) {
           // If the client already believes it's logged, show a re-login banner instead of prompting
           if (isLoggedFlag) {
@@ -117,25 +134,58 @@
           if (saved) return saveToServer();
           throw new Error('Autenticazione richiesta');
         }
+
+        // If endpoint missing (404) treat as static host — fallback to download
+        if (res.status === 404) {
+          downloadMenu();
+          saveStatus.textContent = 'Hosting statico rilevato — menu scaricato.';
+          showToast('Hosting statico — menu scaricato.', 'success');
+          originalMenu = JSON.parse(JSON.stringify(menu));
+          dirtyTabs = {};
+          renderTabs();
+          saveBtn.disabled = false;
+          return;
+        }
+
         const err = await res.json().catch(() => ({}));
         throw new Error(err.error || res.statusText || 'Errore salvataggio');
       }
 
+      // success
       saveStatus.textContent = 'Salvataggio completato.';
-      // update snapshot and clear dirty flags
       originalMenu = JSON.parse(JSON.stringify(menu));
       dirtyTabs = {};
       renderTabs();
       showToast('Salvataggio completato.', 'success');
       setTimeout(() => { if (saveStatus) saveStatus.textContent = ''; }, 1500);
     } catch (err) {
-      console.error('Save to server failed', err);
+      console.error('Save failed', err);
       const msg = err && err.message ? err.message : 'Errore salvataggio';
       showToast('Salvataggio fallito: ' + msg, 'error');
       saveStatus.textContent = 'Salvataggio fallito: ' + msg;
       setTimeout(() => { if (saveStatus) saveStatus.textContent = ''; }, 3000);
     } finally {
       saveBtn.disabled = false;
+    }
+  }
+
+  // Download menu.json locally (fallback for static hosting)
+  function downloadMenu() {
+    try {
+      const data = JSON.stringify(menu, null, 2);
+      const blob = new Blob([data], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'menu.json';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      showToast('File `menu.json` scaricato.', 'success');
+    } catch (e) {
+      console.error('Download failed', e);
+      showToast('Download fallito.', 'error');
     }
   }
 
