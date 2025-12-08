@@ -441,7 +441,7 @@
             // also keep legacy token key for compatibility
             localStorage.setItem('mugo-github-token', tokenVal);
             githubConfig = params;
-            if (saveGithubBtn) saveGithubBtn.style.display = 'none';
+            const __btn = getSaveGithubBtn(); if (__btn) __btn.style.display = 'none';
           } catch (e) { console.warn('Could not store GitHub config', e); }
         }
         overlay.remove();
@@ -718,13 +718,14 @@
     saveToServer();
   });
 
-  // Save to GitHub button handler
-  if (saveGithubBtn) saveGithubBtn.addEventListener('click', () => {
+  // Save to GitHub button handler (safe lookup at runtime)
+  const __githubBtn = getSaveGithubBtn();
+  if (__githubBtn) __githubBtn.addEventListener('click', () => {
     showGithubModal().then(params => {
       if (!params) return;
       // if user asked to remember, store full config
       if (params.remember) {
-        try { localStorage.setItem('mugo-github-config', JSON.stringify(params)); localStorage.removeItem('mugo-github-token'); githubConfig = params; if (saveGithubBtn) saveGithubBtn.style.display = 'none'; } catch(e){}
+        try { localStorage.setItem('mugo-github-config', JSON.stringify(params)); localStorage.removeItem('mugo-github-token'); githubConfig = params; const __b2 = getSaveGithubBtn(); if (__b2) __b2.style.display = 'none'; } catch(e){}
       }
       saveToGitHub(params);
     });
