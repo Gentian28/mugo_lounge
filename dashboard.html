@@ -4,6 +4,18 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MUGO Menu — Dashboard</title>
+  <script>
+    // Prevent page flash: redirect early if not authenticated
+    (function(){
+      try {
+        if (localStorage.getItem('mugo-admin-auth') !== '1') {
+          location.href = 'admin.html';
+        }
+      } catch (e) {
+        /* ignore */
+      }
+    })();
+  </script>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -28,6 +40,7 @@
         <div id="dashboard-global-controls" class="dashboard-footer-controls">
           <button id="add-tab-btn" class="menu-tab primary">Aggiungi Categoria</button>
           <button id="save-btn" class="menu-tab primary cta">Salva tutto</button>
+          <button id="save-github-btn" class="menu-tab">Salva su GitHub</button>
           <button id="logout-btn" class="menu-tab danger">Esci</button>
         </div>
       </div>

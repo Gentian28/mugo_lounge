@@ -433,6 +433,15 @@ body {
   transform: translateY(0) scale(1);
 }
 
+/* GitHub modal inputs tweaks */
+#github-modal input {
+  border-radius: 6px;
+  padding: 8px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(0,0,0,0.6);
+  color: var(--text-main);
+}
+
 .items-root {
   display: flex;
   flex-direction: column;

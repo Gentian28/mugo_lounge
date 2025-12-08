@@ -85,29 +85,19 @@
   async function saveToServer() {
     const token = localStorage.getItem('mugo-admin-token');
     const isLoggedFlag = localStorage.getItem('mugo-admin-auth') === '1';
-    if (!token) {
-      // If the client thinks it's logged, don't spam the modal — show a reauth banner
-      if (isLoggedFlag) {
-        showReauthBanner();
-        return;
-      }
-      // otherwise show inline auth modal and retry after successful login
-      return showAuthModal().then(saved => {
-        if (saved) return saveToServer();
-      });
-    }
+    // Always attempt the request — this allows static-host fallback (download) when no server.
+    // Build headers only if token exists.
     saveBtn.disabled = true;
     saveStatus.textContent = 'Salvataggio in corso...';
     // Try sending to server; if server not available (static host), fallback to download
     try {
       let res;
       try {
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = 'Basic ' + token;
         res = await fetch('/save-menu', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic ' + token
-          },
+          headers,
           body: JSON.stringify(menu)
         });
       } catch (netErr) {
@@ -374,6 +364,109 @@
     t.addEventListener('click', remover);
   }
 
+  // GitHub save modal: asks for owner/repo/branch/path and token
+  function showGithubModal() {
+    return new Promise((resolve) => {
+      if (document.getElementById('github-modal')) return resolve(null);
+      const overlay = document.createElement('div');
+      overlay.id = 'github-modal';
+      overlay.style.position = 'fixed';
+      overlay.style.inset = '0';
+      overlay.style.background = 'rgba(0,0,0,0.6)';
+      overlay.style.display = 'flex';
+      overlay.style.alignItems = 'center';
+      overlay.style.justifyContent = 'center';
+      overlay.style.zIndex = 9999;
+
+      const box = document.createElement('div');
+      box.style.background = 'var(--bg-card)';
+      box.style.padding = '18px';
+      box.style.borderRadius = '10px';
+      box.style.width = '420px';
+      box.style.boxShadow = '0 12px 40px rgba(0,0,0,0.6)';
+
+      const title = document.createElement('div');
+      title.textContent = 'Salva su GitHub (opzione per Pages)';
+      title.style.marginBottom = '10px';
+      title.style.fontWeight = '700';
+
+      const owner = document.createElement('input'); owner.placeholder = 'Proprietario (owner)'; owner.style.width='100%'; owner.style.marginBottom='8px'; owner.value = '';
+      const repo = document.createElement('input'); repo.placeholder = 'Repository (es: user/repo)'; repo.style.width='100%'; repo.style.marginBottom='8px'; repo.value = '';
+      const branch = document.createElement('input'); branch.placeholder = 'Branch (default: main)'; branch.style.width='100%'; branch.style.marginBottom='8px'; branch.value = 'main';
+      const pathInput = document.createElement('input'); pathInput.placeholder = 'Percorso file (default: menu.json)'; pathInput.style.width='100%'; pathInput.style.marginBottom='8px'; pathInput.value = 'menu.json';
+      const token = document.createElement('input'); token.placeholder = 'Token GitHub (personal access token)'; token.type = 'password'; token.style.width='100%'; token.style.marginBottom='8px'; token.value = '';
+      const rememberLabel = document.createElement('label'); rememberLabel.style.display='flex'; rememberLabel.style.alignItems='center'; rememberLabel.style.gap='8px';
+      const remember = document.createElement('input'); remember.type = 'checkbox'; remember.checked = false;
+      rememberLabel.appendChild(remember); rememberLabel.appendChild(document.createTextNode('Ricorda token (solo su questo dispositivo)'));
+
+      const hint = document.createElement('div'); hint.textContent = 'Nota: il token richiede scope `repo` per commit. Non memorizzare token su computer pubblico.'; hint.style.fontSize='12px'; hint.style.color='var(--text-muted)'; hint.style.marginBottom='8px';
+
+      const actions = document.createElement('div'); actions.style.display='flex'; actions.style.gap='8px'; actions.style.justifyContent='flex-end';
+      const cancel = document.createElement('button'); cancel.className='menu-tab'; cancel.textContent='Annulla';
+      cancel.addEventListener('click', ()=>{ overlay.remove(); resolve(null); });
+      const submit = document.createElement('button'); submit.className='menu-tab primary'; submit.textContent='Salva su GitHub';
+      submit.addEventListener('click', ()=>{
+        const ownerVal = owner.value.trim();
+        const repoVal = repo.value.trim();
+        const branchVal = branch.value.trim() || 'main';
+        const pathVal = pathInput.value.trim() || 'menu.json';
+        const tokenVal = token.value.trim();
+        if (!ownerVal || !repoVal || !tokenVal) return alert('Inserisci owner, repo e token');
+        if (remember.checked) localStorage.setItem('mugo-github-token', tokenVal);
+        overlay.remove();
+        resolve({ owner: ownerVal, repo: repoVal, branch: branchVal, path: pathVal, token: tokenVal });
+      });
+
+      actions.appendChild(cancel); actions.appendChild(submit);
+      box.appendChild(title);
+      box.appendChild(owner); box.appendChild(repo); box.appendChild(branch); box.appendChild(pathInput); box.appendChild(token); box.appendChild(rememberLabel); box.appendChild(hint); box.appendChild(actions);
+      overlay.appendChild(box); document.body.appendChild(overlay);
+      // prefill token if stored
+      const stored = localStorage.getItem('mugo-github-token'); if (stored) token.value = stored;
+    });
+  }
+
+  // Commit menu.json to GitHub using REST API
+  async function saveToGitHub({ owner, repo, branch, path, token }) {
+    try {
+      showToast('Invio a GitHub...', 'success');
+      const apiBase = 'https://api.github.com/repos/' + encodeURIComponent(owner) + '/' + encodeURIComponent(repo) + '/contents/' + encodeURIComponent(path);
+      // get existing file to read sha
+      const getUrl = apiBase + '?ref=' + encodeURIComponent(branch);
+      const headers = { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' };
+      let sha;
+      let getRes = await fetch(getUrl, { headers });
+      if (getRes.ok) {
+        const js = await getRes.json(); sha = js.sha;
+      } else if (getRes.status === 404) {
+        sha = undefined;
+      } else {
+        const txt = await getRes.text().catch(()=>getRes.statusText);
+        throw new Error('Impossibile controllare file: ' + (txt || getRes.status));
+      }
+
+      const content = JSON.stringify(menu, null, 2);
+      // base64 encode unicode-safe
+      const b64 = btoa(unescape(encodeURIComponent(content)));
+      const body = { message: 'Aggiorna menu.json via dashboard', content: b64, branch };
+      if (sha) body.sha = sha;
+
+      const putRes = await fetch(apiBase, { method: 'PUT', headers: Object.assign({'Content-Type':'application/json'}, headers), body: JSON.stringify(body) });
+      if (!putRes.ok) {
+        const err = await putRes.json().catch(()=>({message: putRes.statusText}));
+        throw new Error(err && err.message ? err.message : 'Commit fallito');
+      }
+
+      showToast('Commit su GitHub eseguito con successo', 'success');
+      originalMenu = JSON.parse(JSON.stringify(menu));
+      dirtyTabs = {};
+      renderTabs();
+    } catch (err) {
+      console.error('GitHub save failed', err);
+      showToast('GitHub commit fallito: ' + (err.message || err), 'error');
+    }
+  }
+
   function renderCrud() {
     crudRoot.innerHTML = '';
     menu.tabs = menu.tabs || [];
@@ -566,6 +659,15 @@
 
   saveBtn.addEventListener('click', () => {
     saveToServer();
+  });
+
+  // Save to GitHub button handler
+  const saveGithubBtn = document.getElementById('save-github-btn');
+  if (saveGithubBtn) saveGithubBtn.addEventListener('click', () => {
+    showGithubModal().then(params => {
+      if (!params) return;
+      saveToGitHub(params);
+    });
   });
 
   logoutBtn.addEventListener('click', () => {
