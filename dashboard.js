@@ -709,7 +709,6 @@
   });
 
   // Save to GitHub button handler
-  const saveGithubBtn = document.getElementById('save-github-btn');
   if (saveGithubBtn) saveGithubBtn.addEventListener('click', () => {
     showGithubModal().then(params => {
       if (!params) return;
