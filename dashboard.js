@@ -16,7 +16,9 @@
   const saveBtn = document.getElementById('save-btn');
   const logoutBtn = document.getElementById('logout-btn');
   const saveStatus = document.getElementById('save-status');
-  const saveGithubBtn = document.getElementById('save-github-btn');
+  // use `var` here to tolerate accidental duplicate concatenation on hosted builds
+  // (duplicate `const` declarations in the same scope cause a SyntaxError at parse time)
+  var saveGithubBtn = document.getElementById('save-github-btn');
 
   let menu = { tabs: [] };
   let originalMenu = null; // last saved snapshot
