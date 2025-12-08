@@ -15,7 +15,7 @@
 }
 
 html, body {
-  height: 100%;
+  min-height: 100%;
 }
 
 body {
@@ -87,6 +87,15 @@ body {
   gap: 8px;
   justify-content: center;
   margin-bottom: 18px;
+}
+
+/* Dashboard category tabs tweaks */
+.menu-tabs {
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+.menu-tabs .menu-tab {
+  flex: 0 0 auto;
 }
 
 .menu-tab {
@@ -264,3 +273,247 @@ body {
 #menu-preview .menu-card {
   margin-bottom: 12px;
 }
+
+/* Dashboard styles */
+.dashboard-controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Footer/global controls for dashboard */
+.dashboard-footer-controls {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+.dashboard-footer-controls .menu-tab {
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.menu-tab.primary {
+  background: var(--accent-soft);
+  border-color: transparent;
+  color: #050505;
+}
+
+.menu-tab.cta {
+  box-shadow: 0 8px 20px rgba(0,0,0,0.45);
+}
+
+@media (max-width: 700px) {
+  .dashboard-footer-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .dashboard-footer-controls .menu-tab {
+    width: 100%;
+  }
+}
+
+.crud-root {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.crud-root > div {
+  width: 100%;
+}
+
+.tab-card {
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.02);
+}
+
+.tab-header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.tab-header input[type="text"] {
+  flex: 1 1 auto;
+}
+
+.group-card {
+  border-top: 1px dashed rgba(255,255,255,0.04);
+  padding-top: 8px;
+  margin-top: 8px;
+}
+
+.group-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.group-toggle {
+  margin-left: 8px;
+  padding: 6px 8px;
+  font-size: 12px;
+}
+
+.group-card.group-collapsed {
+  opacity: 0.95;
+}
+.group-card.group-collapsed .items-root {
+  display: none;
+}
+
+/* Icon button styles */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 6px;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.04);
+  font-size: 15px;
+}
+.icon-btn:hover {
+  background: rgba(255,255,255,0.03);
+  transform: translateY(-1px);
+}
+
+/* make dashboard cards more distinctive */
+.tab-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12));
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+.group-card {
+  background: rgba(0,0,0,0.04);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.item-row {
+  background: rgba(255,255,255,0.01);
+  padding: 8px;
+  border-radius: 6px;
+}
+
+/* Toast styles (fallback styling; core styles inline in JS) */
+.toast {
+  font-size: 13px;
+  max-width: 320px;
+}
+.toast-success {
+  background: linear-gradient(90deg, rgba(79, 195, 86, 0.9), rgba(46, 125, 50, 0.9));
+}
+.toast-error {
+  background: linear-gradient(90deg, rgba(244, 67, 54, 0.95), rgba(211, 47, 47, 0.95));
+}
+
+/* animation and visibility classes for toasts */
+.toast {
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  opacity: 0;
+  transform: translateY(-8px) scale(0.99);
+  transition: opacity 220ms cubic-bezier(.2,.8,.2,1), transform 220ms cubic-bezier(.2,.8,.2,1);
+}
+.toast-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.items-root {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.item-left {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.item-right {
+  width: 140px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.menu-tab.danger {
+  background: rgba(255, 64, 64, 0.12);
+  border-color: rgba(255,64,64,0.18);
+  color: #ffb3b3;
+}
+
+.save-status {
+  margin-top: 8px;
+  min-height: 20px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* responsive */
+@media (max-width: 800px) {
+  .tab-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .item-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .item-right {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .tab-card {
+    padding: 10px;
+  }
+}
+
+/* make tab cards responsive and readable */
+@media (min-width: 700px) {
+  .crud-root {
+    gap: 14px;
+  }
+  .crud-root .menu-tab {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+}
+
+@media (max-width: 700px) {
+  .crud-root .menu-tab {
+    font-size: 12px;
+    padding: 6px 8px;
+  }
+  .menu-item {
+    flex-direction: column;
+  }
+}
+
+/* inputs inside dashboard */
+.crud-root input[type="text"] {
+  border-radius: 6px;
+}
+

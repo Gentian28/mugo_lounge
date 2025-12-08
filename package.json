@@ -1,0 +1,12 @@
+{
+  "name": "mugo_menu_only_site_server",
+  "version": "1.0.0",
+  "description": "Simple server to serve and persist menu.json for MUGO site",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

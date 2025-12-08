@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MUGO Menu — Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="menu-page">
+    <header class="menu-page-header">
+      <div class="menu-brand">
+        <img src="img/mugo_logo.png" alt="MUGO" style="max-width:70px">
+        <div class="menu-brand-sub">Dashboard</div>
+      </div>
+    </header>
+
+    <section class="menu-shell">
+      <div class="menu-card active" style="max-width: 720px;">
+        <header class="menu-card-header"><h1 class="menu-card-title-main">Pannello Menu</h1></header>
+
+        <div id="save-status" class="save-status" aria-live="polite"></div>
+
+        <div id="category-tabs" class="menu-tabs" aria-label="Categorie"></div>
+        <div id="crud-root" class="crud-root"></div>
+
+        <!-- Footer controls: global actions placed at end of page -->
+        <div id="dashboard-global-controls" class="dashboard-footer-controls">
+          <button id="add-tab-btn" class="menu-tab primary">Aggiungi Categoria</button>
+          <button id="save-btn" class="menu-tab primary cta">Salva tutto</button>
+          <button id="logout-btn" class="menu-tab danger">Esci</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

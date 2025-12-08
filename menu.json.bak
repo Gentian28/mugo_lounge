@@ -1,0 +1,184 @@
+{
+  "tabs": [
+    {
+      "id": "drink-menu",
+      "label": "Drink",
+      "title": "cocktail",
+      "groups": [
+        {
+          "label": "Signature",
+          "items": [
+            {
+              "name": "old fashioned",
+              "desc": "Rye whisky, angostura bitter, zucchero, scorza d’arancia.",
+              "price": "8.90"
+            },
+            {
+              "name": "berry bliss",
+              "desc": "Vodka, frutti di bosco, sciroppo semplice, succo di limone.",
+              "price": "7.50"
+            },
+            {
+              "name": "mugo spritz",
+              "desc": "Aperol, prosecco, soda, rosmarino fresco, fetta d’arancia.",
+              "price": "7.00"
+            }
+          ]
+        },
+        {
+          "label": "Classici",
+          "items": [
+            {
+              "name": "negroni",
+              "desc": "Gin, bitter, vermut rosso.",
+              "price": "7.50"
+            },
+            {
+              "name": "margarita",
+              "desc": "Tequila, triple sec, succo di lime, bordo di sale.",
+              "price": "7.50"
+            },
+            {
+              "name": "mojito",
+              "desc": "Rum bianco, lime, menta fresca, zucchero, soda.",
+              "price": "7.00"
+            },
+            {
+              "name": "Nuova voce",
+              "desc": "fdfd",
+              "price": "fdfd"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "menu-vini",
+      "label": "Vini",
+      "title": "vini",
+      "groups": [
+        {
+          "label": "Bianchi",
+          "items": [
+            {
+              "name": "pinot grigio",
+              "desc": "Fresco, floreale, ideale per aperitivo.",
+              "price": "cal. 4.50"
+            },
+            {
+              "name": "sauvignon blanc",
+              "desc": "Note agrumate ed erbacee, finale elegante.",
+              "price": "cal. 5.00"
+            }
+          ]
+        },
+        {
+          "label": "Rossi",
+          "items": [
+            {
+              "name": "montepulciano d’abruzzo",
+              "desc": "Strutturato, con note di frutti rossi.",
+              "price": "cal. 5.00"
+            },
+            {
+              "name": "primitivo di manduria",
+              "desc": "Corposo, morbido, con finale persistente.",
+              "price": "cal. 5.50"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "menu-apericena",
+      "label": "Apericena",
+      "title": "apericena",
+      "groups": [
+        {
+          "label": "Da condividere",
+          "items": [
+            {
+              "name": "tagliere misto",
+              "desc": "Selezione di salumi, formaggi, confetture e pane artigianale.",
+              "price": "16.00"
+            },
+            {
+              "name": "bruschette assortite",
+              "desc": "Pomodorini, crema di olive, formaggio fresco, verdure grigliate.",
+              "price": "10.00"
+            },
+            {
+              "name": "mini burger",
+              "desc": "Mini burger gourmet con carne selezionata e salsa della casa.",
+              "price": "12.00"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "menu-cena",
+      "label": "Cena",
+      "title": "cena",
+      "groups": [
+        {
+          "label": "Antipasti",
+          "items": [
+            {
+              "name": "tartare di salmone",
+              "desc": "Con avocado, lime e olio aromatizzato.",
+              "price": "14.00"
+            },
+            {
+              "name": "burrata & pomodorini",
+              "desc": "Burrata cremosa con pomodorini e pesto al basilico.",
+              "price": "11.00"
+            }
+          ]
+        },
+        {
+          "label": "Secondi",
+          "items": [
+            {
+              "name": "filetto di manzo",
+              "desc": "Alla griglia, con riduzione al vino rosso.",
+              "price": "24.00"
+            },
+            {
+              "name": "salmone alla griglia",
+              "desc": "Con verdure di stagione e salsa allo yogurt.",
+              "price": "19.00"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "soft-drinks",
+      "label": "Soft Drinks",
+      "title": "soft drinks",
+      "groups": [
+        {
+          "label": "Bevande",
+          "items": [
+            {
+              "name": "coca-cola",
+              "desc": "In lattina o bottiglia, classica o zero.",
+              "price": "3.00"
+            },
+            {
+              "name": "tè freddo",
+              "desc": "Pesca o limone, servito con ghiaccio.",
+              "price": "3.50"
+            },
+            {
+              "name": "succhi di frutta",
+              "desc": "Arancia, ananas, ace, frutti di bosco.",
+              "price": "3.50"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
