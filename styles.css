@@ -1,0 +1,216 @@
+:root {
+  --bg-page: #050505;
+  --bg-card: #101010;
+  --text-main: #ffffff;
+  --text-muted: #b7b7b7;
+  --accent-soft: #cfa15a;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top, #323232 0, #050505 55%, #000000 100%);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+}
+
+.page-bg {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.05), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.06), transparent 60%);
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.menu-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 16px 40px 16px;
+}
+
+.menu-page-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.menu-brand {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.menu-brand-main {
+  font-family: "Montserrat", system-ui, sans-serif;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.menu-brand-sub {
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.menu-page-tagline {
+  margin-top: 10px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.menu-shell {
+  margin-top: 20px;
+}
+
+.menu-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.menu-tab {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(0, 0, 0, 0.45);
+  color: var(--text-muted);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.16s ease-out, color 0.16s ease-out, border-color 0.16s ease-out;
+}
+
+.menu-tab.active {
+  background: var(--accent-soft);
+  border-color: transparent;
+  color: #050505;
+}
+
+.menu-card {
+  /* background: rgba(10, 10, 10, 0.96); */
+  /* border-radius: 24px; */
+  padding: 26px 22px 22px 22px;
+  /* box-shadow: 0 18px 46px rgba(0, 0, 0, 0.75); */
+  /* border: 1px solid rgba(255, 255, 255, 0.06); */
+  display: none;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.menu-card.active {
+  display: block;
+}
+
+.menu-card-header {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.menu-card-kicker {
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.menu-card-title-main {
+  font-family: "Montserrat", system-ui, sans-serif;
+  font-size: 30px;
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  margin-top: 4px;
+}
+
+.menu-card-title-sub {
+  font-size: 13px;
+  font-style: italic;
+  letter-spacing: 0.26em;
+  text-transform: lowercase;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.menu-group {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.menu-group-label {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.menu-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.menu-item-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.menu-item-name {
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.menu-item-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.menu-item-price {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-align: right;
+  padding-left: 4px;
+}
+
+.menu-footnote {
+  margin-top: 16px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .menu-card {
+    border-radius: 18px;
+    padding: 22px 18px 18px 18px;
+  }
+}
