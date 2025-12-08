@@ -47,6 +47,16 @@
     </section>
   </main>
 
-  <script src="dashboard.js"></script>
+  <script>
+    // Load dashboard script with a cache-busting query so GitHub Pages serve the latest version
+    (function(){
+      try {
+        var s = document.createElement('script');
+        s.src = 'dashboard.js?cb=' + Date.now();
+        s.defer = true;
+        document.body.appendChild(s);
+      } catch(e) { console.error('Failed to load dashboard script', e); }
+    })();
+  </script>
 </body>
 </html>
