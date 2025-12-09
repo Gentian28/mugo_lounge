@@ -45,8 +45,13 @@
             },
             {
               "name": "Nuova voce",
-              "desc": "fdfd",
-              "price": "fdfd"
+              "desc": "",
+              "price": ""
+            },
+            {
+              "name": "Nuova voce",
+              "desc": "fff",
+              "price": "d33"
             }
           ]
         }
