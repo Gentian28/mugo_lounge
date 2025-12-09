@@ -556,11 +556,6 @@
       renderAll();
     });
 
-    const saveTabBtn = document.createElement('button');
-    saveTabBtn.className = 'menu-tab';
-    saveTabBtn.textContent = 'Salva categoria';
-    saveTabBtn.addEventListener('click', () => saveTab(tabIdx));
-
     const revertBtn = document.createElement('button');
     revertBtn.className = 'menu-tab';
     revertBtn.textContent = 'Annulla';
@@ -568,7 +563,6 @@
 
     headerRow.appendChild(titleInput);
     headerRow.appendChild(idInput);
-    headerRow.appendChild(saveTabBtn);
     headerRow.appendChild(revertBtn);
     headerRow.appendChild(delTabBtn);
     tabCard.appendChild(headerRow);
