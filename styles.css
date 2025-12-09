@@ -516,9 +516,6 @@ body {
     font-size: 12px;
     padding: 6px 8px;
   }
-  .menu-item {
-    flex-direction: column;
-  }
 }
 
 /* inputs inside dashboard */
