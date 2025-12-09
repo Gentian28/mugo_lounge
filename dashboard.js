@@ -16,8 +16,7 @@
   const saveBtn = document.getElementById('save-btn');
   const logoutBtn = document.getElementById('logout-btn');
   const saveStatus = document.getElementById('save-status');
-  // Helper to read the GitHub save button at use-time (in case script ran before DOM)
-  function getSaveGithubBtn() { return document.getElementById('save-github-btn'); }
+  // (Server-only) no GitHub save helper needed in this build.
 
   let menu = { tabs: [] };
   let originalMenu = null; // last saved snapshot
@@ -129,7 +128,6 @@
           if (saved) return saveToServer();
           throw new Error('Autenticazione richiesta');
         }
-
         // If endpoint missing (404) treat as static host — fallback to download
         if (res.status === 404) {
           downloadMenu();
@@ -142,8 +140,17 @@
           return;
         }
 
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.error || res.statusText || 'Errore salvataggio');
+        // Try to extract response body (JSON or text) for better diagnostics
+        let serverMsg = null;
+        try {
+          const j = await res.json().catch(()=>null);
+          if (j && (j.error || j.message)) serverMsg = j.error || j.message;
+        } catch(e){}
+        if (!serverMsg) {
+          try { serverMsg = await res.text(); } catch(e){}
+        }
+        console.error('Save failed, status:', res.status, 'body:', serverMsg);
+        throw new Error(serverMsg || res.statusText || 'Errore salvataggio');
       }
 
       // success
@@ -164,22 +171,7 @@
     }
   }
 
-  // Read stored GitHub config (legacy token-only or full config)
-  function getStoredGithubConfig() {
-    try {
-      const cfg = localStorage.getItem('mugo-github-config');
-      if (cfg) return JSON.parse(cfg);
-      const tok = localStorage.getItem('mugo-github-token');
-      if (tok) return { owner: null, repo: null, branch: 'main', path: 'menu.json', token: tok };
-    } catch (e) {
-      console.warn('Invalid github config in storage', e);
-    }
-    return null;
-  }
-
-  let githubConfig = getStoredGithubConfig();
-  // hide the separate "Salva su GitHub" button when a config/token is already stored
-  const __saveBtn = getSaveGithubBtn(); if (__saveBtn) __saveBtn.style.display = githubConfig ? 'none' : '';
+  // Server-only build: no stored GitHub config or GitHub button handling.
 
   // Download menu.json locally (fallback for static hosting)
   function downloadMenu() {
@@ -386,133 +378,9 @@
     t.addEventListener('click', remover);
   }
 
-  // GitHub save modal: asks for owner/repo/branch/path and token
-  function showGithubModal() {
-    return new Promise((resolve) => {
-      if (document.getElementById('github-modal')) return resolve(null);
-      const overlay = document.createElement('div');
-      overlay.id = 'github-modal';
-      overlay.style.position = 'fixed';
-      overlay.style.inset = '0';
-      overlay.style.background = 'rgba(0,0,0,0.6)';
-      overlay.style.display = 'flex';
-      overlay.style.alignItems = 'center';
-      overlay.style.justifyContent = 'center';
-      overlay.style.zIndex = 9999;
+  // Server-only build: no GitHub modal or commit functionality.
 
-      const box = document.createElement('div');
-      box.style.background = 'var(--bg-card)';
-      box.style.padding = '18px';
-      box.style.borderRadius = '10px';
-      box.style.width = '420px';
-      box.style.boxShadow = '0 12px 40px rgba(0,0,0,0.6)';
-
-      const title = document.createElement('div');
-      title.textContent = 'Salva su GitHub (opzione per Pages)';
-      title.style.marginBottom = '10px';
-      title.style.fontWeight = '700';
-
-      const owner = document.createElement('input'); owner.placeholder = 'Proprietario (owner)'; owner.style.width='100%'; owner.style.marginBottom='8px'; owner.value = '';
-      const repo = document.createElement('input'); repo.placeholder = 'Repository (es: repo-name)'; repo.style.width='100%'; repo.style.marginBottom='8px'; repo.value = '';
-      const branch = document.createElement('input'); branch.placeholder = 'Branch (default: main)'; branch.style.width='100%'; branch.style.marginBottom='8px'; branch.value = 'main';
-      const pathInput = document.createElement('input'); pathInput.placeholder = 'Percorso file (default: menu.json)'; pathInput.style.width='100%'; pathInput.style.marginBottom='8px'; pathInput.value = 'menu.json';
-      const token = document.createElement('input'); token.placeholder = 'Token GitHub (personal access token)'; token.type = 'password'; token.style.width='100%'; token.style.marginBottom='8px'; token.value = '';
-      const rememberLabel = document.createElement('label'); rememberLabel.style.display='flex'; rememberLabel.style.alignItems='center'; rememberLabel.style.gap='8px';
-      const remember = document.createElement('input'); remember.type = 'checkbox'; remember.checked = false;
-      rememberLabel.appendChild(remember); rememberLabel.appendChild(document.createTextNode('Ricorda token (solo su questo dispositivo)'));
-
-      const hint = document.createElement('div'); hint.textContent = 'Nota: il token richiede scope `repo` per commit. Non memorizzare token su computer pubblico.'; hint.style.fontSize='12px'; hint.style.color='var(--text-muted)'; hint.style.marginBottom='8px';
-
-      const actions = document.createElement('div'); actions.style.display='flex'; actions.style.gap='8px'; actions.style.justifyContent='flex-end';
-      const cancel = document.createElement('button'); cancel.className='menu-tab'; cancel.textContent='Annulla';
-      cancel.addEventListener('click', ()=>{ overlay.remove(); resolve(null); });
-      const submit = document.createElement('button'); submit.className='menu-tab primary'; submit.textContent='Salva su GitHub';
-      submit.addEventListener('click', ()=>{
-        const ownerVal = owner.value.trim();
-        const repoVal = repo.value.trim();
-        const branchVal = branch.value.trim() || 'main';
-        const pathVal = pathInput.value.trim() || 'menu.json';
-        const tokenVal = token.value.trim();
-        if (!ownerVal || !repoVal || !tokenVal) return alert('Inserisci owner, repo e token');
-        const params = { owner: ownerVal, repo: repoVal, branch: branchVal, path: pathVal, token: tokenVal, remember: remember.checked };
-        if (remember.checked) {
-          try {
-            localStorage.setItem('mugo-github-config', JSON.stringify(params));
-            // also keep legacy token key for compatibility
-            localStorage.setItem('mugo-github-token', tokenVal);
-            githubConfig = params;
-            const __btn = getSaveGithubBtn(); if (__btn) __btn.style.display = 'none';
-          } catch (e) { console.warn('Could not store GitHub config', e); }
-        }
-        overlay.remove();
-        resolve(params);
-      });
-
-      actions.appendChild(cancel); actions.appendChild(submit);
-      box.appendChild(title);
-      box.appendChild(owner); box.appendChild(repo); box.appendChild(branch); box.appendChild(pathInput); box.appendChild(token); box.appendChild(rememberLabel); box.appendChild(hint); box.appendChild(actions);
-      overlay.appendChild(box); document.body.appendChild(overlay);
-      // prefill fields from stored config (if present)
-      try {
-        const storedCfg = getStoredGithubConfig();
-        if (storedCfg) {
-          if (storedCfg.owner) owner.value = storedCfg.owner;
-          if (storedCfg.repo) repo.value = storedCfg.repo;
-          if (storedCfg.branch) branch.value = storedCfg.branch;
-          if (storedCfg.path) pathInput.value = storedCfg.path;
-          if (storedCfg.token) token.value = storedCfg.token;
-          remember.checked = !!(storedCfg.token);
-        }
-      } catch(e){}
-    });
-  }
-
-  // Commit menu.json to GitHub using REST API
-  async function saveToGitHub({ owner, repo, branch, path, token }) {
-    try {
-      showToast('Invio a GitHub...', 'success');
-      const apiBase = 'https://api.github.com/repos/' + encodeURIComponent(owner) + '/' + encodeURIComponent(repo) + '/contents/' + encodeURIComponent(path);
-      // get existing file to read sha
-      const getUrl = apiBase + '?ref=' + encodeURIComponent(branch);
-      const headers = { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' };
-      let sha;
-      let getRes = await fetch(getUrl, { headers });
-      if (getRes.ok) {
-        const js = await getRes.json(); sha = js.sha;
-      } else if (getRes.status === 404) {
-        sha = undefined;
-      } else {
-        const txt = await getRes.text().catch(()=>getRes.statusText);
-        throw new Error('Impossibile controllare file: ' + (txt || getRes.status));
-      }
-
-      const content = JSON.stringify(menu, null, 2);
-      // base64 encode unicode-safe
-      const b64 = btoa(unescape(encodeURIComponent(content)));
-      const body = { message: 'Aggiorna menu.json via dashboard', content: b64, branch };
-      if (sha) body.sha = sha;
-
-      const putRes = await fetch(apiBase, { method: 'PUT', headers: Object.assign({'Content-Type':'application/json'}, headers), body: JSON.stringify(body) });
-      if (!putRes.ok) {
-        const err = await putRes.json().catch(()=>({message: putRes.statusText}));
-        throw new Error(err && err.message ? err.message : 'Commit fallito');
-      }
-
-      showToast('Commit su GitHub eseguito con successo', 'success');
-      // reload the canonical menu from the repo (cache-busting) so dashboard shows the exact committed file
-      try {
-        await loadMenu();
-      } catch (e) {
-        // fallback to updating in-memory snapshot
-        originalMenu = JSON.parse(JSON.stringify(menu));
-        dirtyTabs = {};
-        renderTabs();
-      }
-    } catch (err) {
-      console.error('GitHub save failed', err);
-      showToast('GitHub commit fallito: ' + (err.message || err), 'error');
-    }
-  }
+  // Server-only build: saving is handled by `/save-menu` on the server.
 
   function renderCrud() {
     crudRoot.innerHTML = '';
@@ -705,31 +573,11 @@
   });
 
   saveBtn.addEventListener('click', () => {
-    // If we have a stored GitHub config with a token, prefer committing to GitHub
-    if (githubConfig && githubConfig.token) {
-      // If owner/repo are missing (legacy token-only), open modal to prompt for repo details
-      if (!githubConfig.owner || !githubConfig.repo) {
-        showGithubModal().then(params => { if (params) saveToGitHub(params); });
-        return;
-      }
-      saveToGitHub(githubConfig);
-      return;
-    }
+    // Server-only: always save via server endpoint
     saveToServer();
   });
 
-  // Save to GitHub button handler (safe lookup at runtime)
-  const __githubBtn = getSaveGithubBtn();
-  if (__githubBtn) __githubBtn.addEventListener('click', () => {
-    showGithubModal().then(params => {
-      if (!params) return;
-      // if user asked to remember, store full config
-      if (params.remember) {
-        try { localStorage.setItem('mugo-github-config', JSON.stringify(params)); localStorage.removeItem('mugo-github-token'); githubConfig = params; const __b2 = getSaveGithubBtn(); if (__b2) __b2.style.display = 'none'; } catch(e){}
-      }
-      saveToGitHub(params);
-    });
-  });
+  // Server-only build: remove GitHub button handling.
 
   logoutBtn.addEventListener('click', () => {
     localStorage.removeItem('mugo-admin-auth');
