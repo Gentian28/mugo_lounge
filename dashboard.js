@@ -170,7 +170,7 @@
       const cfg = localStorage.getItem('mugo-github-config');
       if (cfg) return JSON.parse(cfg);
       const tok = localStorage.getItem('mugo-github-token');
-      if (tok) return { owner: null, repo: null, branch: 'main', path: 'menu.json', token: tok };
+      if (tok) return { owner: null, repo: null, branch: 'github_page_version', path: 'menu.json', token: tok };
     } catch (e) {
       console.warn('Invalid github config in storage', e);
     }
