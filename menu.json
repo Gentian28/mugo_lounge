@@ -23,7 +23,8 @@
               "desc": "Aperol, prosecco, soda, rosmarino fresco, fetta d’arancia.",
               "price": "7.00"
             }
-          ]
+          ],
+          "_open": false
         },
         {
           "label": "Classici",
@@ -43,7 +44,8 @@
               "desc": "Rum bianco, lime, menta fresca, zucchero, soda.",
               "price": "7.00"
             }
-          ]
+          ],
+          "_open": false
         }
       ]
     },
