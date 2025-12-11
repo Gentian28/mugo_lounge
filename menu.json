@@ -66,6 +66,21 @@
               "name": "Sauvignon ",
               "desc": "",
               "price": "7€"
+            },
+            {
+              "name": "Chardonny",
+              "desc": "",
+              "price": "7€"
+            },
+            {
+              "name": "Gewurztraminer",
+              "desc": "",
+              "price": "7€"
+            },
+            {
+              "name": "Ribolla Gialla",
+              "desc": "",
+              "price": "6€"
             }
           ]
         },
@@ -83,9 +98,29 @@
               "price": "5€"
             },
             {
-              "name": "Morellino di Scansano",
+              "name": "Morellino di Scansano DOCG",
               "desc": "",
               "price": "7€"
+            },
+            {
+              "name": "Sangiovese",
+              "desc": "",
+              "price": "7€"
+            },
+            {
+              "name": "Bolgheri DUCA  ALLONE",
+              "desc": "",
+              "price": "7€"
+            },
+            {
+              "name": "Tordaio",
+              "desc": "",
+              "price": "6€"
+            },
+            {
+              "name": "Montecucco",
+              "desc": "",
+              "price": "6€"
             }
           ]
         }
