@@ -206,22 +206,32 @@
       "title": "apericena",
       "groups": [
         {
-          "label": "Da condividere",
+          "label": "Taglieri del MUGO",
           "items": [
             {
-              "name": "tagliere misto",
-              "desc": "Selezione di salumi, formaggi, confetture e pane artigianale.",
-              "price": "16.00"
+              "name": "Gran Tagliere Toscano",
+              "desc": "Prosciutto crudo-salame toscano-pancetta-olive-crostino nero-pecorino-schiacciata",
+              "price": "10.00€"
             },
             {
-              "name": "bruschette assortite",
-              "desc": "Pomodorini, crema di olive, formaggio fresco, verdure grigliate.",
+              "name": "Aperipizza",
+              "desc": "Pizza margherita-patatine fritte",
               "price": "10.00"
             },
             {
-              "name": "mini burger",
-              "desc": "Mini burger gourmet con carne selezionata e salsa della casa.",
-              "price": "12.00"
+              "name": "Crostini misti ",
+              "desc": "4pz di crostini misti-prosciutto crudo",
+              "price": "7€"
+            },
+            {
+              "name": "Hamburger - patatine fritte",
+              "desc": "",
+              "price": "13€"
+            },
+            {
+              "name": "Tris di formaggi ",
+              "desc": "",
+              "price": "7€"
             }
           ]
         }
@@ -251,7 +261,7 @@
               "price": "35.00€"
             }
           ],
-          "_open": true
+          "_open": false
         },
         {
           "label": "Menu a base di carne tutti sabati",
@@ -272,7 +282,7 @@
               "price": "30.00€"
             }
           ],
-          "_open": true
+          "_open": false
         }
       ]
     },
