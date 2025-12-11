@@ -58,14 +58,14 @@
           "label": "Bianchi",
           "items": [
             {
-              "name": "pinot grigio",
-              "desc": "Fresco, floreale, ideale per aperitivo.",
-              "price": "cal. 4.50"
+              "name": "Pinot Grigio",
+              "desc": "",
+              "price": "5€"
             },
             {
-              "name": "sauvignon blanc",
-              "desc": "Note agrumate ed erbacee, finale elegante.",
-              "price": "cal. 5.00"
+              "name": "Sauvignon ",
+              "desc": "",
+              "price": "7€"
             }
           ]
         },
@@ -73,14 +73,19 @@
           "label": "Rossi",
           "items": [
             {
-              "name": "montepulciano d’abruzzo",
-              "desc": "Strutturato, con note di frutti rossi.",
-              "price": "cal. 5.00"
+              "name": "Chianti DOCG",
+              "desc": "",
+              "price": "5€"
             },
             {
-              "name": "primitivo di manduria",
-              "desc": "Corposo, morbido, con finale persistente.",
-              "price": "cal. 5.50"
+              "name": "Pinot Nero",
+              "desc": "",
+              "price": "5€"
+            },
+            {
+              "name": "Morellino di Scansano",
+              "desc": "",
+              "price": "7€"
             }
           ]
         }
