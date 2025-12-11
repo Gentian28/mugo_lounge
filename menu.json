@@ -290,6 +290,72 @@
           ]
         }
       ]
+    },
+    {
+      "id": "tab-1765478388435",
+      "label": "BOLLICINE",
+      "groups": [
+        {
+          "label": "CALICE",
+          "items": [
+            {
+              "name": "Sant'Orsola Millesimato",
+              "desc": "",
+              "price": "5€"
+            },
+            {
+              "name": " Astoria Moscato",
+              "desc": "",
+              "price": "6€"
+            }
+          ]
+        },
+        {
+          "label": "BOTTIGLIE",
+          "items": [
+            {
+              "name": "Astoria Diamond ",
+              "desc": "",
+              "price": "25€"
+            },
+            {
+              "name": "Astoria Fanò",
+              "desc": "",
+              "price": "25€"
+            },
+            {
+              "name": "Astoria Tiemo",
+              "desc": "",
+              "price": "25€"
+            },
+            {
+              "name": "Astoria Moscato",
+              "desc": "",
+              "price": "25€"
+            },
+            {
+              "name": "Moet ",
+              "desc": "",
+              "price": "80€"
+            },
+            {
+              "name": "Moet ICE",
+              "desc": "",
+              "price": "120€"
+            },
+            {
+              "name": "Ca'del Bosco",
+              "desc": "",
+              "price": "75€"
+            },
+            {
+              "name": "Dom Perignon",
+              "desc": "",
+              "price": "450€"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
