@@ -233,34 +233,46 @@
       "title": "cena",
       "groups": [
         {
-          "label": "Antipasti",
+          "label": "Menu a base di pesce tutti venerdi",
           "items": [
             {
-              "name": "tartare di salmone",
-              "desc": "Con avocado, lime e olio aromatizzato.",
-              "price": "14.00"
+              "name": "Linguine allo scoglio",
+              "desc": "Gnocchetti gamberi e zucchine",
+              "price": "14.00€"
             },
             {
-              "name": "burrata & pomodorini",
-              "desc": "Burrata cremosa con pomodorini e pesto al basilico.",
-              "price": "11.00"
+              "name": "Frittura gamberi e calamari con verdure ",
+              "desc": "Grigliata mista di pesce con contorno",
+              "price": "20.00€"
+            },
+            {
+              "name": "Menu completo con:",
+              "desc": "Acqua, una bottiglia di vino ogni quattro persone e caffè",
+              "price": "35.00€"
             }
-          ]
+          ],
+          "_open": true
         },
         {
-          "label": "Secondi",
+          "label": "Menu a base di carne tutti sabati",
           "items": [
             {
-              "name": "filetto di manzo",
-              "desc": "Alla griglia, con riduzione al vino rosso.",
-              "price": "24.00"
+              "name": "Antipasto Toscano",
+              "desc": "",
+              "price": "12.00€"
             },
             {
-              "name": "salmone alla griglia",
-              "desc": "Con verdure di stagione e salsa allo yogurt.",
-              "price": "19.00"
+              "name": "Grigliata mista con contorno",
+              "desc": "",
+              "price": "20.00€"
+            },
+            {
+              "name": "Menu completo con:",
+              "desc": "Acqua, una bottiglia di vino ogni quattro persone e caffè",
+              "price": "30.00€"
             }
-          ]
+          ],
+          "_open": true
         }
       ]
     },
