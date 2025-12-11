@@ -9,22 +9,17 @@
           "label": "Signature",
           "items": [
             {
-              "name": "old fashioned",
-              "desc": "Rye whisky, angostura bitter, zucchero, scorza d’arancia.",
-              "price": "8.90"
+              "name": "Gin Tonic",
+              "desc": "Purple gin - liquore alla violetta - acqua brillante ",
+              "price": "12.00€"
             },
             {
-              "name": "berry bliss",
-              "desc": "Vodka, frutti di bosco, sciroppo semplice, succo di limone.",
-              "price": "7.50"
-            },
-            {
-              "name": "mugo spritz",
-              "desc": "Aperol, prosecco, soda, rosmarino fresco, fetta d’arancia.",
-              "price": "7.00"
+              "name": "Mugo Spriz",
+              "desc": "P31 - prosecco - soda",
+              "price": "6.00€"
             }
           ],
-          "_open": true
+          "_open": false
         },
         {
           "label": "Classici",
@@ -32,20 +27,20 @@
             {
               "name": "negroni",
               "desc": "Gin, bitter, vermut rosso.",
-              "price": "7.50"
+              "price": "6.00€"
             },
             {
               "name": "margarita",
-              "desc": "Tequila, triple sec, succo di lime, bordo di sale.",
-              "price": "7.50"
+              "desc": "Tequila, triple sec, succo di lime",
+              "price": "8.00€"
             },
             {
               "name": "mojito",
               "desc": "Rum bianco, lime, menta fresca, zucchero, soda.",
-              "price": "7.00"
+              "price": "6.00€"
             }
           ],
-          "_open": false
+          "_open": true
         }
       ]
     },
@@ -233,7 +228,8 @@
               "desc": "",
               "price": "7€"
             }
-          ]
+          ],
+          "_open": false
         }
       ]
     },
@@ -349,7 +345,8 @@
               "desc": "",
               "price": "3.50€"
             }
-          ]
+          ],
+          "_open": false
         }
       ]
     },
@@ -370,7 +367,8 @@
               "desc": "",
               "price": "6€"
             }
-          ]
+          ],
+          "_open": false
         },
         {
           "label": "BOTTIGLIE",
@@ -415,7 +413,8 @@
               "desc": "",
               "price": "450€"
             }
-          ]
+          ],
+          "_open": false
         }
       ]
     }
