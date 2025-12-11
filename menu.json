@@ -274,18 +274,58 @@
           "items": [
             {
               "name": "coca-cola",
-              "desc": "In lattina o bottiglia, classica o zero.",
-              "price": "3.00"
+              "desc": "",
+              "price": "3.50€"
             },
             {
-              "name": "tè freddo",
-              "desc": "Pesca o limone, servito con ghiaccio.",
-              "price": "3.50"
+              "name": "Estathè",
+              "desc": "",
+              "price": "3.50€"
             },
             {
-              "name": "succhi di frutta",
-              "desc": "Arancia, ananas, ace, frutti di bosco.",
-              "price": "3.50"
+              "name": "Fanta ",
+              "desc": "",
+              "price": "3.50€"
+            },
+            {
+              "name": "Lemon Soda ",
+              "desc": "",
+              "price": "3.50€"
+            },
+            {
+              "name": "Tassoni ",
+              "desc": "",
+              "price": "3.50€"
+            },
+            {
+              "name": "Crodino",
+              "desc": "",
+              "price": "3.50€"
+            },
+            {
+              "name": "San Bitter ",
+              "desc": "",
+              "price": "3.50€"
+            },
+            {
+              "name": "Campari Soda ",
+              "desc": "",
+              "price": "4€"
+            },
+            {
+              "name": "Red Bull",
+              "desc": "",
+              "price": "4€"
+            },
+            {
+              "name": "Succo di Frutta ",
+              "desc": "",
+              "price": "3.50€"
+            },
+            {
+              "name": "Gatorade Arancia",
+              "desc": "",
+              "price": "3.50€"
             }
           ]
         }
