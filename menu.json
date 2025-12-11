@@ -9,17 +9,17 @@
           "label": "Signature",
           "items": [
             {
-              "name": "Gin Tonic",
+              "name": "Purple Tonic",
               "desc": "Purple gin - liquore alla violetta - acqua brillante ",
               "price": "12.00€"
             },
             {
-              "name": "Mugo Spriz",
+              "name": "Mugo Spritz",
               "desc": "P31 - prosecco - soda",
               "price": "6.00€"
             }
           ],
-          "_open": false
+          "_open": true
         },
         {
           "label": "Classici",
