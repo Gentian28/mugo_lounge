@@ -24,7 +24,7 @@
               "price": "7.00"
             }
           ],
-          "_open": false
+          "_open": true
         },
         {
           "label": "Classici",
@@ -80,9 +80,10 @@
             {
               "name": "Ribolla Gialla",
               "desc": "",
-              "price": "6€"
+              "price": "5€"
             }
-          ]
+          ],
+          "_open": false
         },
         {
           "label": "Rossi",
@@ -122,7 +123,80 @@
               "desc": "",
               "price": "6€"
             }
-          ]
+          ],
+          "_open": false
+        },
+        {
+          "label": "Bianchi Bottiglia",
+          "items": [
+            {
+              "name": "Pinot Grigio",
+              "desc": "",
+              "price": "15€"
+            },
+            {
+              "name": "Gewurztraminer",
+              "desc": "",
+              "price": "22€"
+            },
+            {
+              "name": "Chardonnay",
+              "desc": "",
+              "price": "20€"
+            },
+            {
+              "name": "Sauvignon",
+              "desc": "",
+              "price": "20€"
+            },
+            {
+              "name": "Ribolla Gialla",
+              "desc": "",
+              "price": "15€"
+            }
+          ],
+          "_open": false
+        },
+        {
+          "label": "Rossi Bottiglia",
+          "items": [
+            {
+              "name": "Chianti DOCG",
+              "desc": "",
+              "price": "15€"
+            },
+            {
+              "name": "Pinot Nero",
+              "desc": "",
+              "price": "15€"
+            },
+            {
+              "name": "Morellino di Scansano DOCG",
+              "desc": "",
+              "price": "20€"
+            },
+            {
+              "name": "Sangiovese ",
+              "desc": "",
+              "price": "22€"
+            },
+            {
+              "name": "Bolgheri DUCA  ALLONE DOCG",
+              "desc": "",
+              "price": "25€"
+            },
+            {
+              "name": "Tordaio",
+              "desc": "",
+              "price": "18€"
+            },
+            {
+              "name": "Montecucco",
+              "desc": "",
+              "price": "20€"
+            }
+          ],
+          "_open": false
         }
       ]
     },
